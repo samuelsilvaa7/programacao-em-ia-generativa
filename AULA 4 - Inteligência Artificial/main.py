@@ -1,21 +1,19 @@
-import streamlit as st
-import pandas as pd
-from sklearn.linear_model import LinearRegression
 
-st.header("Previsão de Vendas")
 
-# Dados: [Investimento em Marketing] -> Faturamento
-dados_vendas = pd.DataFrame({
-    'investimento': [100, 200, 300, 400, 500, 600],
-    'faturamento': [1200, 2500, 3200, 4800, 5100, 6300]
-})
+import sqlite3
 
-# objetivo: previsão de FATURAMENTO baseado nos investimentos
-modelo_faturamento = LinearRegression()
+arquivo_DB = sqlite3.connect('nome_banco.db')
+cursor = arquivo_DB.cursor()
 
-modelo_faturamento.fit(dados_vendas[['investimento']], dados_vendas["faturamento"] )
+cursor.execute('''
 
-investimento_usuario = st.number_input("investimento em marketing")
-# investimento_usuario = st.slider('investimento em marketing', 0, 1000, 100) # x
-faturamento_final = modelo_faturamento.predict([[investimento_usuario]])  # f(x)
-st.write(faturamento_final)  
+        CREATE TABLE IF NOT EXISTS dados(
+
+              vendas REAL,
+              vendedor TEXT
+
+
+         )
+''')
+
+arquivo_DB.comit()
