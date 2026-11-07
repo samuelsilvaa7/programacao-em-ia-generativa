@@ -1,48 +1,34 @@
 
-# x = 20
 
 
-# escola
 
 
-# cadastro 
+# NOTAS DE ESTUDOS 
 
 
-acesso = input('Deseja acessar o sistema 😊s/n--')
+import streamlit as st
+import pandas as pd
+from sklearn.linear_model import LinearRegression
 
 
-while acesso == 's': # isso V ou F
-    print('SISTEMA ESCOLA xyz')
+st.header('ANALISE DE NOTAS - PREVENDO')
 
 
-    nome = input('Nome Aluno>>') # variável 
-    # snake_case
-    nota_1 = float(input('Nota 1 >> ✔ '))
-    nota_2 = float(input('Nota 2 >> ✔'))
-    nota_3 = float(input('Nota 3 >> ✔'))
+estudos = pd.DataFrame({
+'notas':[10,9,10,9.3,8,10,10],  # y
+'horas':[2,4,5,7,9,10,5]        # x 
+})
 
 
-    #media 
-    lista = []
-    lista.append(nota_1)
-    lista.append(nota_2)
-    lista.append(nota_3)
+#st.scatter_chart(estudos, x = 'horas', y= 'notas')
+modelo_escola = LinearRegression() 
+modelo_escola.fit(estudos[['horas']], estudos['notas'])
 
 
-    media = sum(lista)/len(lista)
+h_estudo = st.number_input('horas de estudo')
+# h_estudo = st.slider('horas de estudos', 0,30,5) # x 
+nota_final = modelo_escola.predict([[h_estudo]])  # f(x)
+print(nota_final)# y 
 
 
-    print('O aluno(a)', nome, 'possui a média', media)
-
-
-    if media >= 7:
-        print(f"O {nome} Passou de ano ")
-    elif media >= 5  and media < 7:
-        print(f'O {nome} Está de recuperação')
-    else:
-        print(f'O {nome} não passou de ano...😥')
-    acesso = input('Deseja acessar continuar? s/n')
-
-
-print('Até logo ...')   
-input('clique enter para sair s/n👍')
+st.metric(f'sua nota seria' ,f'{min(nota_final[0], 10.0):.1f}') # y 
