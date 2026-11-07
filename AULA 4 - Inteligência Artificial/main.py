@@ -12,3 +12,10 @@ dados_vendas = pd.DataFrame({
 
 # objetivo: previsão de FATURAMENTO baseado nos investimentos
 modelo_faturamento = LinearRegression()
+
+modelo_faturamento.fit(dados_vendas[['investimento']], dados_vendas["faturamento"] )
+
+investimento_usuario = st.number_input("investimento em marketing")
+# investimento_usuario = st.slider('investimento em marketing', 0, 1000, 100) # x
+faturamento_final = modelo_faturamento.predict([[investimento_usuario]])  # f(x)
+st.write(faturamento_final)  
